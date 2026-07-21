@@ -1,19 +1,17 @@
 from fastapi import APIRouter, Depends, HTTPException
-from dotenv import load_dotenv
 from app.dependencies import verify_token
-import os
-import psycopg2
 from app.models.match import Match
 import numpy as np
 import ast
+from db.connection import get_connection
 
-load_dotenv()
+
 router = APIRouter()
-db_connection = os.getenv('SUPABASE')
+
 
 @router.post('/match')
 def match(match: Match, user_id: int = Depends(verify_token)):
-    conn = psycopg2.connect(db_connection)
+    conn = get_connection()
     cursor = conn.cursor()
 
     cursor.execute('SELECT embedding FROM resumes WHERE id = %s AND user_id = %s', (match.resume_id, user_id))

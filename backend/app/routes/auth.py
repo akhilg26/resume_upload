@@ -1,16 +1,15 @@
 from fastapi import APIRouter, HTTPException
-import psycopg2
 from app.models.user import UserRegister
 import bcrypt
 import jwt
 from dotenv import load_dotenv
 import os
 import datetime
+from db.connection import get_connection
 
 load_dotenv()
 
 jwt_secret = os.getenv('JWT_SECRET')
-db_connection = os.getenv('SUPABASE')
 
 router = APIRouter()
 
@@ -20,9 +19,7 @@ def register(user: UserRegister):
     password_bytes = user.password.encode("utf-8")
     salt = bcrypt.gensalt()
     hashed_password = bcrypt.hashpw(password_bytes, salt).decode('utf-8')
-
-    print("DB CONNECTION STRING:", db_connection)
-    conn = psycopg2.connect(db_connection)
+    conn = get_connection()
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM users WHERE username = %s", (user.username,))
     result = cursor.fetchone()
@@ -49,7 +46,7 @@ def register(user: UserRegister):
 
 @router.post('/login')
 def login(user: UserRegister):
-    conn = psycopg2.connect(db_connection)
+    conn = get_connection()
     cursor = conn.cursor()
     cursor.execute('SELECT id, password_hash FROM users WHERE username = %s', (user.username,))
     result = cursor.fetchone()

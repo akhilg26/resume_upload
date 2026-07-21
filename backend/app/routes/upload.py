@@ -1,26 +1,17 @@
 from fastapi import APIRouter, Depends
 from app.models.document import DocumentModel
-import psycopg2
-from dotenv import load_dotenv
-import os
 from app.dependencies import verify_token
 from sentence_transformers import SentenceTransformer
-
-
-load_dotenv()
-
-db_connection = os.getenv('SUPABASE')
-
+from db.connection import get_connection
 
 router = APIRouter()
 model = SentenceTransformer('all-MiniLM-L6-v2')
-
 
 @router.post('/resumes')
 def resume_upload(resume: DocumentModel, user_id: int = Depends(verify_token)):
     embedding = model.encode(resume.rawtext) #np array
     embedding_list = embedding.tolist() # python list
-    conn = psycopg2.connect(db_connection)
+    conn = get_connection()
     cursor = conn.cursor()
     cursor.execute('INSERT INTO resumes (user_id, raw_text, embedding) VALUES (%s, %s, %s) RETURNING id', (user_id, resume.rawtext, str(embedding_list))) # psycopg2 can't convert python list or np array into SQL formats, python str of list of vectors converts to SQL string easier
     result = cursor.fetchone()
@@ -32,7 +23,7 @@ def resume_upload(resume: DocumentModel, user_id: int = Depends(verify_token)):
 def job_desc_upload(job: DocumentModel, user_id: int = Depends(verify_token)):
     embedding = model.encode(job.rawtext)
     embedding_list = embedding.tolist()
-    conn = psycopg2.connect(db_connection)
+    conn = get_connection()
     cursor = conn.cursor()
     cursor.execute('INSERT INTO job_descriptions (user_id, raw_text, embedding) VALUES (%s, %s, %s) RETURNING id', (user_id, job.rawtext, str(embedding_list)))
     result = cursor.fetchone()
