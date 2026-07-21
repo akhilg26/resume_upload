@@ -1,6 +1,8 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Header
 from app.routes import auth
 from app.routes import upload
+from dotenv import load_dotenv
+import os
 
 app = FastAPI()
 
@@ -9,5 +11,4 @@ app.include_router(upload.router)
 
 
 
-def get_current_user():
-    pass
+
