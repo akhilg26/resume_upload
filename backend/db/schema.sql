@@ -19,7 +19,7 @@ CREATE TABLE job_descriptions(
     id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL REFERENCES users(id),
     raw_text TEXT NOT NULL,
-    embedding vector(1536),
+    embedding vector(384),
     created_at TIMESTAMP DEFAULT now()
 );
 
