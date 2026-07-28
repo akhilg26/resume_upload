@@ -182,3 +182,87 @@
     border-right-color: var(--border);
   }
 }
+
+/* ── Auth pages (login / register) ─────────────────────────── */
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.auth-card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 360px;
+  padding: 32px;
+  border: 1px solid var(--border, #333);
+  border-radius: 12px;
+  background: var(--accent-bg, rgba(255, 255, 255, 0.03));
+}
+
+.auth-card h1 {
+  margin: 0 0 20px;
+  font-size: 24px;
+  text-align: center;
+}
+
+.auth-card label {
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.auth-card input {
+  margin-bottom: 16px;
+  padding: 10px 12px;
+  font-size: 15px;
+  border: 1px solid var(--border, #444);
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+}
+
+.auth-card input:focus-visible {
+  outline: 2px solid var(--accent, #646cff);
+  outline-offset: 1px;
+}
+
+.auth-card button {
+  margin-top: 4px;
+  padding: 11px;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent, #646cff);
+  color: #fff;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.auth-card button:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.auth-card button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.auth-error {
+  margin: 0 0 14px;
+  padding: 8px 12px;
+  font-size: 14px;
+  border-radius: 8px;
+  background: rgba(220, 38, 38, 0.12);
+  color: #f87171;
+}
+
+.auth-switch {
+  margin: 18px 0 0;
+  font-size: 14px;
+  text-align: center;
+}
