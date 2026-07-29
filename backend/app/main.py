@@ -4,8 +4,6 @@ from app.routes import upload
 from app.routes import create_match
 from fastapi.middleware.cors import CORSMiddleware
 
-
-
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,

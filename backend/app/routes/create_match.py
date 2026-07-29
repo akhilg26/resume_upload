@@ -31,12 +31,12 @@ def match(match: Match, user_id: int = Depends(verify_token)):
     dot_product = np.dot(resume_embedding, job_embedding)
     magnitude = np.linalg.norm(resume_embedding) * np.linalg.norm(job_embedding)
     cos_similarity = dot_product / magnitude
-    score = round(cos_similarity * 100, 2)
+    score = round(float(cos_similarity) * 100, 2)
 
 
     cursor.execute('INSERT INTO matches (resume_id, job_id, score) VALUES (%s, %s, %s) RETURNING id', (match.resume_id, match.job_id, score))
     result = cursor.fetchone()
     conn.commit()
     return {'message': 'Success',
-            'match_id': result[0]}
+            'match_id': result[0], 'score': score}
 

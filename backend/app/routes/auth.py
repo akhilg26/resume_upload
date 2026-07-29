@@ -18,7 +18,7 @@ router = APIRouter()
 def register(user: UserRegister):
     password_bytes = user.password.encode("utf-8")
     salt = bcrypt.gensalt()
-    hashed_password = bcrypt.hashpw(password_bytes, salt).decode('utf-8')
+    hashed_password = bcrypt.hashpw(password_bytes, salt).decode('utf-8') # hash password
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM users WHERE username = %s", (user.username,))
